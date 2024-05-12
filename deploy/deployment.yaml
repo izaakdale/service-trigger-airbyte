@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: service-trigger-airbyte
+  namespace: airbyte
 spec:
   selector:
     matchLabels:
@@ -21,4 +22,11 @@ spec:
         envFrom:
         - secretRef:
             name: trigger-airbyte-env
-
+        volumeMounts:
+        - mountPath: /credentials
+          name: aws_creds
+      volumes:
+      - name: aws_creds
+        hostPath:
+          path: /deploy/credentials
+          type: FileOrCreate

@@ -14,6 +14,7 @@ type specification struct {
 	AirbyteConnectionID string `envconfig:"AIRBYTE_CONNECTION_ID"`
 	AirbyteAuth         string `envconfig:"AIRBYTE_AUTH"`
 	SQSURL              string `envconfig:"SQS_URL"`
+	CredentialsFile     string `envconfig:"CREDENTIALS_FILE"`
 }
 
 func main() {
@@ -23,7 +24,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+	cfg, err := config.LoadDefaultConfig(context.TODO(),
+		config.WithSharedCredentialsFiles(
+			[]string{spec.CredentialsFile},
+		),
+	)
 	if err != nil {
 		log.Fatalf("failed to load configuration, %v", err)
 	}
