@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-trigger-airbyte
+spec:
+  selector:
+    matchLabels:
+      app: service-trigger-airbyte
+  template:
+    metadata:
+      labels:
+        app: service-trigger-airbyte
+    spec:
+      containers:
+      - name: service-trigger-airbyte
+        image: izaakdale/service-trigger-airbyte
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+        envFrom:
+        - secretRef:
+            name: trigger-airbyte-env
+
